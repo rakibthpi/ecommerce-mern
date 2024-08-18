@@ -1,7 +1,16 @@
 import { studentController } from "./student.controller";
 
-const route = require("express").Router();
+const studentRoute = require("express").Router();
 
-route.post("", studentController.createStudent);
+// will call controller function here
+studentRoute.post("/create-student", studentController.createStudent);
 
-export default route;
+studentRoute.get("/getAll", studentController.findAllStudent);
+
+studentRoute.get("/:studdentid", studentController.findSingleStudent);
+
+studentRoute.patch("/:studentid", studentController.updateStudent);
+
+studentRoute.delete("/:studentid", studentController.deleteStudent);
+
+export { studentRoute };

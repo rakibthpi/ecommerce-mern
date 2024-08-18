@@ -1,11 +1,69 @@
 import { Schema, model, connect } from "mongoose";
-import { IStudent } from "./student.interface";
+import {
+  IGuardian,
+  ILocalGuardian,
+  IStudent,
+  IUserNameInterface,
+  StudentModel,
+} from "./student.interface";
+// Guardian Schema
+const GuardianSchema = new Schema<IGuardian>({
+  fatherName: { type: String, required: true },
+  fatherOccupation: { type: String, required: true },
+  FatherContactNo: { type: String, required: true },
+  motherName: { type: String, required: true },
+  motherOccupation: { type: String, required: true },
+  motherContactNo: { type: String, required: true },
+});
 
-const studentSchema = new Schema<IStudent>({
+// User Name Schema
+const UserNameSchema = new Schema<IUserNameInterface>({
+  firstName: { type: String, required: true },
+  middleName: { type: String },
+  lastName: { type: String, required: true },
+});
+
+// Local Guardian Schema
+const LocalGuardianSchema = new Schema<ILocalGuardian, StudentModel>({
   name: { type: String, required: true },
-  email: { type: String, required: true },
-  avatar: String,
+  relation: { type: String, required: true },
+  contactNo: { type: String, required: true },
+});
+
+// Student Schema
+const StudentSchema = new Schema<IStudent>({
+  id: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  name: { type: UserNameSchema, required: true },
+  gender: { type: String, enum: ["Male", "Female"], required: true },
+  email: { type: String, required: true, unique: true },
+  dateOfBirth: { type: String, required: true },
+  contactNo: { type: String, required: true },
+  emergencyContactNo: { type: String, required: true },
+  presentAddress: { type: String, required: true },
+  permanentAddress: { type: String, required: true },
+  guardian: { type: GuardianSchema, required: true },
+  localGuardian: { type: LocalGuardianSchema, required: true },
+  profileImage: { type: String, required: true },
+  admissionDepartment: {
+    type: String,
+    enum: ["CSE", "ECE", "EEE", "MECH", "CIVIL"],
+    required: true,
+  },
+  bloodGroup: {
+    type: String,
+    enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+    required: true,
+  },
+  isActive: { type: String, enum: ["active", "inactive"], required: true },
+  isDeleted: { type: Boolean, default: false },
+});
+
+StudentSchema.static("isExistUser", async function (id: string) {
+  const existingUser = await Student.findOne({ id });
+  return existingUser;
 });
 
 // 3. Create a Model.
-export const Student = model<IStudent>("student", studentSchema);
+// Create the Student model
+export const Student = model<IStudent, StudentModel>("student", StudentSchema);
