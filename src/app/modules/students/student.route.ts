@@ -3,7 +3,6 @@ import { studentController } from "./student.controller";
 const studentRoute = require("express").Router();
 
 // will call controller function here
-studentRoute.post("/create-student", studentController.createStudent);
 
 studentRoute.get("/getAll", studentController.findAllStudent);
 

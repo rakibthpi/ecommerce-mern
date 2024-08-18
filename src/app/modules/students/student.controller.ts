@@ -2,36 +2,6 @@ import { Request, Response } from "express";
 import { studentServices } from "./student.service";
 import studentZodSchema from "./student.validation";
 
-const createStudent = async (req: Request, res: Response) => {
-  try {
-    const { student } = req.body;
-    // validation
-    const parsedStudent = studentZodSchema.safeParse(student);
-    if (!parsedStudent.success) {
-      res.status(500).json({
-        success: false,
-        message: "Something went wrong",
-        error: parsedStudent,
-      });
-    }
-    // send response
-    if (parsedStudent.success) {
-      const result = await studentServices.createStudentIntoDb(student);
-      res.status(200).json({
-        success: true,
-        message: "Student created successfully",
-        data: result,
-      });
-    }
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something went wrong",
-      error: error instanceof Error ? error.message : "Something went wrong",
-    });
-  }
-};
-
 // Find all students
 const findAllStudent = async (req: Request, res: Response) => {
   try {
@@ -109,7 +79,6 @@ const deleteStudent = async (req: Request, res: Response) => {
 };
 
 export const studentController = {
-  createStudent,
   findAllStudent,
   findSingleStudent,
   updateStudent,

@@ -1,4 +1,4 @@
-import { Schema, model, connect } from "mongoose";
+import { Schema, model, connect, Types, ObjectId } from "mongoose";
 import {
   IGuardian,
   ILocalGuardian,
@@ -33,6 +33,12 @@ const LocalGuardianSchema = new Schema<ILocalGuardian, StudentModel>({
 // Student Schema
 const StudentSchema = new Schema<IStudent>({
   id: { type: String, required: true, unique: true },
+  user: {
+    type: Schema.Types.ObjectId,
+    unique: true,
+    ref: "User",
+    required: true,
+  },
   password: { type: String, required: true },
   name: { type: UserNameSchema, required: true },
   gender: { type: String, enum: ["Male", "Female"], required: true },
@@ -55,7 +61,6 @@ const StudentSchema = new Schema<IStudent>({
     enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
     required: true,
   },
-  isActive: { type: String, enum: ["active", "inactive"], required: true },
   isDeleted: { type: Boolean, default: false },
 });
 

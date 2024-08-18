@@ -1,4 +1,4 @@
-import { Model, Document } from "mongoose";
+import { Model, Document, Types } from "mongoose";
 export interface IGuardian {
   fatherName: string;
   fatherOccupation: string;
@@ -19,6 +19,7 @@ export interface ILocalGuardian {
 }
 export interface IStudent {
   id: string;
+  user: Types.ObjectId;
   name: IUserNameInterface;
   password: string;
   gender: "Male" | "Female";
@@ -33,7 +34,6 @@ export interface IStudent {
   profileImage: string;
   admissionDepartment: "CSE" | "ECE" | "EEE" | "MECH" | "CIVIL";
   bloodGroup: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
-  isActive: "active" | "inactive";
   isDeleted: boolean;
 }
 

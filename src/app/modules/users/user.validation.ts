@@ -3,26 +3,13 @@ import { z } from "zod";
 // Zod schema for IUser
 const userZodSchema = z.object({
   id: z.string().nonempty({ message: "ID is required" }),
-  password: z.string().nonempty({ message: "Password is required" }),
-  needsPasswordChange: z.boolean().default(false),
-  role: z.enum(["admin", "user"], {
-    errorMap: () => ({ message: "Role must be either 'admin' or 'user'" }),
-  }),
-  status: z
-    .enum(["active", "inactive"], {
-      errorMap: () => ({
-        message: "Status must be either 'active' or 'inactive'",
-      }),
+  password: z
+    .string({
+      invalid_type_error: "Password is a required field",
     })
-    .default("active"),
-  isDeleted: z.boolean().default(false),
-  createdAt: z
-    .date()
-    .default(() => new Date())
-    .optional(),
-  updatedAt: z
-    .date()
-    .default(() => new Date())
+    .min(8, { message: "Password must be at least 8 characters long" })
+    .max(20, { message: "Password must be at most 20 characters long" })
+    .nonempty({ message: "Password is required" })
     .optional(),
 });
 
