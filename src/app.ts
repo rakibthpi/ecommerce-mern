@@ -11,7 +11,6 @@ app.use("/api", studentRoute);
 const testingPerpes = (req: Request, res: Response) => {
   res.send("Hello World!");
 };
-
 app.get("/", testingPerpes);
 
 export default app;

@@ -1,4 +1,5 @@
-interface IUser {
+import { Schema, model, connect } from "mongoose";
+export interface IUser {
   id: string;
   password: string;
   needsPasswordChange: boolean;
