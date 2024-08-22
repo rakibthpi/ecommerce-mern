@@ -31,37 +31,47 @@ const LocalGuardianSchema = new Schema<ILocalGuardian, StudentModel>({
 });
 
 // Student Schema
-const StudentSchema = new Schema<IStudent>({
-  id: { type: String, required: true, unique: true },
-  user: {
-    type: Schema.Types.ObjectId,
-    unique: true,
-    ref: "User",
-    required: true,
+const StudentSchema = new Schema<IStudent>(
+  {
+    id: { type: String, required: true, unique: true },
+    user: {
+      type: Schema.Types.ObjectId,
+      unique: true,
+      ref: "User",
+      required: true,
+    },
+    name: { type: UserNameSchema, required: true },
+    gender: { type: String, enum: ["Male", "Female"], required: true },
+    email: { type: String, required: true, unique: true },
+    dateOfBirth: { type: String, required: true },
+    contactNo: { type: String, required: true },
+    emergencyContactNo: { type: String, required: true },
+    presentAddress: { type: String, required: true },
+    permanentAddress: { type: String, required: true },
+    guardian: { type: GuardianSchema, required: true },
+    localGuardian: { type: LocalGuardianSchema, required: true },
+    profileImage: { type: String, required: true },
+    admissionDepartment: {
+      type: String,
+      enum: ["CSE", "ECE", "EEE", "MECH", "CIVIL"],
+      required: true,
+    },
+    bloodGroup: {
+      type: String,
+      enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+      required: true,
+    },
+    isDeleted: { type: Boolean, default: false },
   },
-  password: { type: String, required: true },
-  name: { type: UserNameSchema, required: true },
-  gender: { type: String, enum: ["Male", "Female"], required: true },
-  email: { type: String, required: true, unique: true },
-  dateOfBirth: { type: String, required: true },
-  contactNo: { type: String, required: true },
-  emergencyContactNo: { type: String, required: true },
-  presentAddress: { type: String, required: true },
-  permanentAddress: { type: String, required: true },
-  guardian: { type: GuardianSchema, required: true },
-  localGuardian: { type: LocalGuardianSchema, required: true },
-  profileImage: { type: String, required: true },
-  admissionDepartment: {
-    type: String,
-    enum: ["CSE", "ECE", "EEE", "MECH", "CIVIL"],
-    required: true,
-  },
-  bloodGroup: {
-    type: String,
-    enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-    required: true,
-  },
-  isDeleted: { type: Boolean, default: false },
+  {
+    toJSON: {
+      virtuals: true,
+    },
+  }
+);
+// add virtual field for fullname
+StudentSchema.virtual("fullName").get(function () {
+  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 
 StudentSchema.static("isExistUser", async function (id: string) {

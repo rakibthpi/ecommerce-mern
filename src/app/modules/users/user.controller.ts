@@ -1,8 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { userServics } from "./user.service";
-import { studentServices } from "../students/student.service";
 
-const createController = async (req: Request, res: Response) => {
+const createController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { password, student } = req.body;
     // send response
@@ -13,11 +16,7 @@ const createController = async (req: Request, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: error.message || "Something went wrong",
-      error: error instanceof Error ? error.message : "Something went wrong",
-    });
+    next(error);
   }
 };
 

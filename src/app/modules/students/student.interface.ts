@@ -21,7 +21,6 @@ export interface IStudent {
   id: string;
   user: Types.ObjectId;
   name: IUserNameInterface;
-  password: string;
   gender: "Male" | "Female";
   email: string;
   dateOfBirth: string;

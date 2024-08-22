@@ -1,5 +1,7 @@
 import { Schema, model, connect } from "mongoose";
 import { IUser } from "./user.interface";
+import bcrypt from "bcrypt";
+import config from "../../config";
 
 // User Schema
 const userSchema = new Schema<IUser>(
@@ -24,6 +26,29 @@ const userSchema = new Schema<IUser>(
     timestamps: true,
   }
 );
+
+// Save per and post area  start
+// Pre-save hook to hash the password before saving the user
+// Save per and post area  start
+userSchema.pre("save", async function (next) {
+  console.log("Modifiy count is", this);
+  if (!this.isModified("password")) {
+    return next();
+  }
+  try {
+    // Hash the password with a salt round of 10
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error: any) {
+    return next(error);
+  }
+});
+
+userSchema.post("save", function (doc, next) {
+  this.password = " ";
+  next();
+});
 
 // Create the User model
 export const User = model<IUser>("User", userSchema);
