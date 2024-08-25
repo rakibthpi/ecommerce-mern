@@ -61,7 +61,6 @@ const StudentSchema = new Schema<IStudent>(
       enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
       required: true,
     },
-    isDeleted: { type: Boolean, default: false },
   },
   {
     toJSON: {

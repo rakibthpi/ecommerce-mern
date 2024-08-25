@@ -7,11 +7,10 @@ const globalErrorHandler = async (
   next: NextFunction
 ) => {
   const statusCode = error.statusCode || 500;
-  const data = error.data;
   res.status(statusCode).json({
     success: false,
     message: error.message || "Something went wrong",
-    error: data,
+    error: error,
   });
 };
 

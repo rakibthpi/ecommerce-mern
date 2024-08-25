@@ -16,11 +16,11 @@ const createStudentIntoDb = async (password: string, studentData: IStudent) => {
     if (Object.keys(newUser).length) {
       studentData.id = newUser.id;
       studentData.user = newUser._id;
+      console.log("studentData", studentData);
       const result = await Student.create(studentData);
       return result;
     }
   } catch (error) {
-    console.error("Error creating student:", error);
     throw error;
   }
 };

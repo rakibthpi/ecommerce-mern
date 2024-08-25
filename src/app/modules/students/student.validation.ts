@@ -46,56 +46,57 @@ const localGuardianSchema = z.object({
 });
 
 // Student schema
-const studentZodSchema = z.object({
-  id: z.string().nonempty({ message: "Student ID is required" }),
+const createStudentZodSchema = z.object({
   password: z.string().nonempty({ message: "Password is required" }),
-  name: userNameInterfaceSchema,
-  gender: z.enum(["Male", "Female"], {
-    errorMap: () => ({ message: "Gender must be either Male or Female" }),
-  }),
-  email: z.string().email({ message: "Email must be a valid email address" }),
-  dateOfBirth: z
-    .string()
-    .nonempty({ message: "Date of birth is required" })
-    .refine((date) => !isNaN(Date.parse(date)), {
-      message: "Date of birth must be a valid date",
+  student: z.object({
+    name: userNameInterfaceSchema,
+    gender: z.enum(["Male", "Female"], {
+      errorMap: () => ({ message: "Gender must be either Male or Female" }),
     }),
-  contactNo: z
-    .string()
-    .regex(/^[0-9]+$/, { message: "Contact number must contain only numbers" })
-    .nonempty({ message: "Contact number is required" }),
-  emergencyContactNo: z
-    .string()
-    .regex(/^[0-9]+$/, {
-      message: "Emergency contact number must contain only numbers",
-    })
-    .nonempty({ message: "Emergency contact number is required" }),
-  presentAddress: z
-    .string()
-    .nonempty({ message: "Present address is required" }),
-  permanentAddress: z
-    .string()
-    .nonempty({ message: "Permanent address is required" }),
-  guardian: guardianSchema,
-  localGuardian: localGuardianSchema,
-  profileImage: z
-    .string()
-    .nonempty({ message: "Profile image URL is required" }),
-  admissionDepartment: z.enum(["CSE", "ECE", "EEE", "MECH", "CIVIL"], {
-    errorMap: () => ({
-      message:
-        "Admission department must be one of CSE, ECE, EEE, MECH, or CIVIL",
+    email: z.string().email({ message: "Email must be a valid email address" }),
+    dateOfBirth: z
+      .string()
+      .nonempty({ message: "Date of birth is required" })
+      .refine((date) => !isNaN(Date.parse(date)), {
+        message: "Date of birth must be a valid date",
+      }),
+    contactNo: z
+      .string()
+      .regex(/^[0-9]+$/, {
+        message: "Contact number must contain only numbers",
+      })
+      .nonempty({ message: "Contact number is required" }),
+    emergencyContactNo: z
+      .string()
+      .regex(/^[0-9]+$/, {
+        message: "Emergency contact number must contain only numbers",
+      })
+      .nonempty({ message: "Emergency contact number is required" }),
+    presentAddress: z
+      .string()
+      .nonempty({ message: "Present address is required" }),
+    permanentAddress: z
+      .string()
+      .nonempty({ message: "Permanent address is required" }),
+    guardian: guardianSchema,
+    localGuardian: localGuardianSchema,
+    profileImage: z
+      .string()
+      .nonempty({ message: "Profile image URL is required" }),
+    admissionDepartment: z.enum(["CSE", "ECE", "EEE", "MECH", "CIVIL"], {
+      errorMap: () => ({
+        message:
+          "Admission department must be one of CSE, ECE, EEE, MECH, or CIVIL",
+      }),
+    }),
+    bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
+      errorMap: () => ({
+        message: "Blood group must be one of A+, A-, B+, B-, AB+, AB-, O+, O-",
+      }),
     }),
   }),
-  bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
-    errorMap: () => ({
-      message: "Blood group must be one of A+, A-, B+, B-, AB+, AB-, O+, O-",
-    }),
-  }),
-  isActive: z.enum(["active", "inactive"], {
-    errorMap: () => ({ message: "Status must be either active or inactive" }),
-  }),
-  isDeleted: z.boolean(),
 });
 
-export default studentZodSchema;
+export const studentValidation = {
+  createStudentZodSchema,
+};

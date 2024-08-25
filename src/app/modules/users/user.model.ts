@@ -31,7 +31,6 @@ const userSchema = new Schema<IUser>(
 // Pre-save hook to hash the password before saving the user
 // Save per and post area  start
 userSchema.pre("save", async function (next) {
-  console.log("Modifiy count is", this);
   if (!this.isModified("password")) {
     return next();
   }
