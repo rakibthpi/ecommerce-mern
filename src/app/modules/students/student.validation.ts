@@ -83,6 +83,7 @@ const createStudentZodSchema = z.object({
     profileImage: z
       .string()
       .nonempty({ message: "Profile image URL is required" }),
+    academicSemester: z.string().optional(),
     admissionDepartment: z.enum(["CSE", "ECE", "EEE", "MECH", "CIVIL"], {
       errorMap: () => ({
         message:

@@ -51,6 +51,7 @@ const StudentSchema = new Schema<IStudent>(
     guardian: { type: GuardianSchema, required: true },
     localGuardian: { type: LocalGuardianSchema, required: true },
     profileImage: { type: String, required: true },
+    academicSemester: { type: Schema.Types.ObjectId, ref: "AcademicSemester" },
     admissionDepartment: {
       type: String,
       enum: ["CSE", "ECE", "EEE", "MECH", "CIVIL"],

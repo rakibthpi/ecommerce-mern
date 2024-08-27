@@ -5,6 +5,7 @@ import {
   months,
 } from "./academicSemester.model";
 
+// Schema for creating an academic semester
 const AcademicSemesterZodSchema = z.object({
   name: z.enum(academicSemesterName as [string, ...string[]], {
     required_error: "Semester name is required.",
@@ -29,7 +30,11 @@ const AcademicSemesterZodSchema = z.object({
   }),
 });
 
-// Export the Zod schema
+// Schema for updating an academic semester (partial updates allowed)
+const UpdateAcademicSemesterZodSchema = AcademicSemesterZodSchema.partial();
+
+// Export the Zod schemas
 export const AcademicSemesterValidation = {
   AcademicSemesterZodSchema,
+  UpdateAcademicSemesterZodSchema,
 };

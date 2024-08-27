@@ -31,6 +31,7 @@ export interface IStudent {
   guardian: IGuardian;
   localGuardian: ILocalGuardian;
   profileImage: string;
+  academicSemester: Types.ObjectId;
   admissionDepartment: "CSE" | "ECE" | "EEE" | "MECH" | "CIVIL";
   bloodGroup: "A+" | "A-" | "B+" | "B-" | "AB+" | "AB-" | "O+" | "O-";
   isDeleted: boolean;
