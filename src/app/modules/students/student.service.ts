@@ -28,7 +28,9 @@ const findSingleStudentFromDb = async (id: string) => {
 // Update single student
 const updateStudentFromDb = async (id: string, studentInput: IStudent) => {
   try {
-    const result = await Student.updateOne({ id }, { $set: Student });
+    const result = await Student.updateOne({ id }, studentInput, {
+      new: true,
+    });
     return result;
   } catch (error) {
     console.error("Error updating student:", error);
