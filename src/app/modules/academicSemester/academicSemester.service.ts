@@ -1,5 +1,5 @@
 import IAcademicSemester from "./academicSemester.interface";
-import { AcademicSemesterModel } from "./academicSemester.model";
+import { AcademicSemester } from "./academicSemester.model";
 
 const academicSemesterIntoDb = async (payLOad: IAcademicSemester) => {
   type TacademicSemester = {
@@ -14,17 +14,17 @@ const academicSemesterIntoDb = async (payLOad: IAcademicSemester) => {
   if (AcademicSemesterCode[payLOad.name] !== payLOad.code) {
     throw new Error("Invalid semester code");
   }
-  const result = await AcademicSemesterModel.create(payLOad);
+  const result = await AcademicSemester.create(payLOad);
   return result;
 };
 
 const getAllSemesters = async () => {
-  const result = await AcademicSemesterModel.find();
+  const result = await AcademicSemester.find();
   return result;
 };
 
 const getSingleAcademicSemester = async (id: string) => {
-  const result = await AcademicSemesterModel.findById(id);
+  const result = await AcademicSemester.findById(id);
   return result;
 };
 
@@ -47,7 +47,7 @@ const updateAcademicSemester = async (
   if (AcademicSemesterCode[payLOad.name] !== payLOad.code) {
     throw new Error("Invalid semester code");
   }
-  const result = await AcademicSemesterModel.findByIdAndUpdate(id, payLOad, {
+  const result = await AcademicSemester.findByIdAndUpdate(id, payLOad, {
     new: true,
   });
   return result;

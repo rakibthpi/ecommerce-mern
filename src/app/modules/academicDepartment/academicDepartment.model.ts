@@ -9,7 +9,6 @@ const academicDepartmentSchema = new Schema(
     academicFaculty: {
       type: Schema.Types.ObjectId,
       ref: "AcademicFaculty",
-      required: true,
     },
   },
   {
@@ -17,12 +16,10 @@ const academicDepartmentSchema = new Schema(
   }
 );
 
-// Save per and post area  start
 academicDepartmentSchema.pre("save", async function (next) {
   const isDepartmentExists = await AcademicDepartment.findOne({
     name: this.name,
   });
-  console.log("RRR", isDepartmentExists);
   if (isDepartmentExists) {
     throw new Error("Department already exists");
   }
@@ -32,7 +29,6 @@ academicDepartmentSchema.pre("save", async function (next) {
 academicDepartmentSchema.pre("findOneAndUpdate", async function (next) {
   const isId = this.getQuery();
   const isDepartmentExists = await AcademicDepartment.findOne(isId);
-  console.log("RRR", isDepartmentExists);
   if (!isDepartmentExists) {
     throw new Error("Id not found");
   }

@@ -5,7 +5,9 @@ import { Student } from "./student.model";
 // Find all student from Database
 const findallStudentFromDb = async () => {
   try {
-    const result = await Student.find();
+    const result = await Student.find()
+      .populate("academicSemester")
+      .populate("academicDepartment");
     return result;
   } catch (error) {
     console.error("Error finding student:", error);

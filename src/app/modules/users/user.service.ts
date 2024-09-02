@@ -1,7 +1,6 @@
 import config from "../../config";
 import { generateStudentId } from "../../utils/user.utils";
-import IAcademicSemester from "../academicSemester/academicSemester.interface";
-import { AcademicSemesterModel } from "../academicSemester/academicSemester.model";
+import { AcademicSemester } from "../academicSemester/academicSemester.model";
 import { IStudent } from "../students/student.interface";
 import { Student } from "../students/student.model";
 import { IUser } from "./user.interface";
@@ -13,7 +12,7 @@ const createStudentIntoDb = async (password: string, studentData: IStudent) => {
     userdata.password = password || (config.default_password as string);
     userdata.role = "student";
 
-    const academicSemester = await AcademicSemesterModel.findById(
+    const academicSemester = await AcademicSemester.findById(
       studentData.academicSemester
     );
 
@@ -26,7 +25,6 @@ const createStudentIntoDb = async (password: string, studentData: IStudent) => {
     if (Object.keys(newUser).length) {
       studentData.id = newUser.id;
       studentData.user = newUser._id;
-      console.log("studentData", studentData);
       const result = await Student.create(studentData);
       return result;
     }

@@ -51,11 +51,13 @@ const StudentSchema = new Schema<IStudent>(
     guardian: { type: GuardianSchema, required: true },
     localGuardian: { type: LocalGuardianSchema, required: true },
     profileImage: { type: String, required: true },
-    academicSemester: { type: Schema.Types.ObjectId, ref: "AcademicSemester" },
-    admissionDepartment: {
-      type: String,
-      enum: ["CSE", "ECE", "EEE", "MECH", "CIVIL"],
-      required: true,
+    academicSemester: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicSemester",
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicDepartment",
     },
     bloodGroup: {
       type: String,
@@ -81,4 +83,5 @@ StudentSchema.static("isExistUser", async function (id: string) {
 
 // 3. Create a Model.
 // Create the Student model
+
 export const Student = model<IStudent, StudentModel>("student", StudentSchema);

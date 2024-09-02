@@ -63,7 +63,7 @@ const AcademicSemesterSchema = new Schema<IAcademicSemester>(
 
 // Static Methods
 AcademicSemesterSchema.pre("save", async function (next) {
-  const isExist = await AcademicSemesterModel.findOne({
+  const isExist = await AcademicSemester.findOne({
     name: this.name,
     year: this.year,
   });
@@ -74,7 +74,7 @@ AcademicSemesterSchema.pre("save", async function (next) {
 });
 
 // Create the model using the schema
-export const AcademicSemesterModel = model<IAcademicSemester>(
+export const AcademicSemester = model<IAcademicSemester>(
   "AcademicSemester",
   AcademicSemesterSchema
 );

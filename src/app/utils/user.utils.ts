@@ -24,13 +24,9 @@ export const generateStudentId = async (payload: IAcademicSemester) => {
   const lastStudentId = await findLastStudentId();
   // 2024 02 0002
   const lastStudentSemesterCode = lastStudentId?.substring(4, 6);
-  console.log("Least Student Semester Code", lastStudentSemesterCode);
   const lastStudentYear = lastStudentId?.substring(0, 4);
-  console.log("Last Student Year ", lastStudentYear);
   const currentSemeterCode = payload.code;
-  console.log("Current Semeter Code ", currentSemeterCode);
   const currentYear = payload.year;
-  console.log("Current Year ", currentYear);
 
   if (
     lastStudentId &&

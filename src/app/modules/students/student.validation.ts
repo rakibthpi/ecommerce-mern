@@ -83,12 +83,13 @@ const createStudentZodSchema = z.object({
     profileImage: z
       .string()
       .nonempty({ message: "Profile image URL is required" }),
-    academicSemester: z.string().optional(),
-    admissionDepartment: z.enum(["CSE", "ECE", "EEE", "MECH", "CIVIL"], {
-      errorMap: () => ({
-        message:
-          "Admission department must be one of CSE, ECE, EEE, MECH, or CIVIL",
-      }),
+    academicSemester: z.string({
+      invalid_type_error: " Academic Semester must be string",
+      required_error: "Academic Semester is required",
+    }),
+    academicDepartment: z.string({
+      invalid_type_error: "Student academic department must be string",
+      required_error: "Student academic department is required",
     }),
     bloodGroup: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
       errorMap: () => ({
