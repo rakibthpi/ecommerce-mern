@@ -7,7 +7,12 @@ const findallStudentFromDb = async () => {
   try {
     const result = await Student.find()
       .populate("academicSemester")
-      .populate("academicDepartment");
+      .populate({
+        path: "academicDepartment",
+        populate: {
+          path: "academicFaculty",
+        },
+      });
     return result;
   } catch (error) {
     console.error("Error finding student:", error);
@@ -19,10 +24,17 @@ const findallStudentFromDb = async () => {
 const findSingleStudentFromDb = async (id: string) => {
   try {
     // const result = await Student.findOne({id });
-    const result = await Student.aggregate([{ $match: { id: id } }]);
+    // const result = await Student.aggregate([{ $match: { id: id } }]);
+    const result = await Student.findById(id)
+      .populate("academicSemester")
+      .populate({
+        path: "academicDepartment",
+        populate: {
+          path: "academicFaculty",
+        },
+      });
     return result;
   } catch (error) {
-    console.error("Single Error finding student:", error);
     throw error;
   }
 };

@@ -1,4 +1,5 @@
 import { model, Schema } from "mongoose";
+import AppError from "../../middlewares/AppError";
 const academicDepartmentSchema = new Schema(
   {
     name: {
@@ -8,7 +9,7 @@ const academicDepartmentSchema = new Schema(
     },
     academicFaculty: {
       type: Schema.Types.ObjectId,
-      ref: "AcademicFaculty",
+      ref: "academicFaculty",
     },
   },
   {
@@ -30,7 +31,7 @@ academicDepartmentSchema.pre("findOneAndUpdate", async function (next) {
   const isId = this.getQuery();
   const isDepartmentExists = await AcademicDepartment.findOne(isId);
   if (!isDepartmentExists) {
-    throw new Error("Id not found");
+    throw new AppError("Department ID not found", 404);
   }
   next();
 });

@@ -58,6 +58,7 @@ const StudentSchema = new Schema<IStudent>(
     academicDepartment: {
       type: Schema.Types.ObjectId,
       ref: "AcademicDepartment",
+      required: true,
     },
     bloodGroup: {
       type: String,

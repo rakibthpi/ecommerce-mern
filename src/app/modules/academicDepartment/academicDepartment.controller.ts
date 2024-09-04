@@ -13,7 +13,7 @@ const createAcademicDepartmentController = catchAsync(async (req, res) => {
   });
 });
 
-const getAllAcademicDepartments = catchAsync(async (req, res) => {
+const getAllAcademicDepartmentController = catchAsync(async (req, res) => {
   const result = await academicDepartment.getAllAcademicDepartments();
   sendResponse(res, {
     statusCode: 200,
@@ -49,7 +49,7 @@ const updateAcademicDepartment = catchAsync(async (req, res) => {
 
 export const academicDepartmentController = {
   createAcademicDepartmentController,
-  getAllAcademicDepartments,
+  getAllAcademicDepartmentController,
   findSingleAcademicDepartment,
   updateAcademicDepartment,
 };

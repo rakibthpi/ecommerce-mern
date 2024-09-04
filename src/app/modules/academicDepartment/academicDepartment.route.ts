@@ -11,7 +11,10 @@ router.post(
   academicDepartmentController.createAcademicDepartmentController
 );
 
-router.get("/getAll", academicDepartmentController.getAllAcademicDepartments);
+router.get(
+  "/getAll",
+  academicDepartmentController.getAllAcademicDepartmentController
+);
 
 router.get("/:id", academicDepartmentController.findSingleAcademicDepartment);
 

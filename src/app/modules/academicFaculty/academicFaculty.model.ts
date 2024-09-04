@@ -6,11 +6,11 @@ const academicFacultySchema = new Schema<IAcademicFaculty>(
     name: { type: String, required: true },
   },
   {
-    timestamps: true, // Automatically manages `createdAt` and `updatedAt`
+    timestamps: true,
   }
 );
 
 export const AcademicFaculty = model<IAcademicFaculty>(
-  "academicfaculty",
+  "academicFaculty",
   academicFacultySchema
 );
