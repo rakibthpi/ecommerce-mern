@@ -1,4 +1,6 @@
+import validateRequest from "../../middlewares/validateRequest";
 import { studentController } from "./student.controller";
+import { studentValidation } from "./student.validation";
 
 const studentRoute = require("express").Router();
 
@@ -6,10 +8,14 @@ const studentRoute = require("express").Router();
 
 studentRoute.get("/getAll", studentController.findAllStudent);
 
-studentRoute.get("/:studdentid", studentController.findSingleStudent);
+studentRoute.get("/:studentId", studentController.findSingleStudent);
 
-studentRoute.patch("/:studentid", studentController.updateStudent);
+studentRoute.patch(
+  "/:studentId",
+  validateRequest(studentValidation.updateStudentZodSchema),
+  studentController.updateStudent
+);
 
-studentRoute.delete("/:studentid", studentController.deleteStudent);
+studentRoute.delete("/:studentId", studentController.deleteStudent);
 
 export { studentRoute };

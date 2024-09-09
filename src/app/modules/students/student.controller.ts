@@ -13,10 +13,10 @@ const findAllStudent = catchAsync(async (req, res, next) => {
     data: result,
   });
 });
-
+// Find single student
 const findSingleStudent = catchAsync(async (req, res, next) => {
-  const { studdentid } = req.params;
-  const result = await studentServices.findSingleStudentFromDb(studdentid);
+  const { studentId } = req.params;
+  const result = await studentServices.findSingleStudentFromDb(studentId);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -26,9 +26,9 @@ const findSingleStudent = catchAsync(async (req, res, next) => {
 });
 // Update student area
 const updateStudent = catchAsync(async (req, res, next) => {
-  const { studentid } = req.params;
+  const { studentId } = req.params;
   const { student } = req.body;
-  const result = await studentServices.updateStudentFromDb(studentid, student);
+  const result = await studentServices.updateStudentFromDb(studentId, student);
   sendResponse(res, {
     statusCode: 200,
     success: true,
@@ -36,10 +36,10 @@ const updateStudent = catchAsync(async (req, res, next) => {
     data: result,
   });
 });
-
+// Deleted student
 const deleteStudent = catchAsync(async (req, res) => {
-  const { studentid } = req.params;
-  const result = await studentServices.deleteStudentFromDb(studentid);
+  const { studentId } = req.params;
+  const result = await studentServices.deleteStudentFromDb(studentId);
   sendResponse(res, {
     statusCode: 200,
     success: true,

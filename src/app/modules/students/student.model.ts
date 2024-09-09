@@ -6,6 +6,7 @@ import {
   IUserNameInterface,
   StudentModel,
 } from "./student.interface";
+import AppError from "../../middlewares/AppError";
 // Guardian Schema
 const GuardianSchema = new Schema<IGuardian>({
   fatherName: { type: String, required: true },
@@ -55,6 +56,7 @@ const StudentSchema = new Schema<IStudent>(
       type: Schema.Types.ObjectId,
       ref: "AcademicSemester",
     },
+
     academicDepartment: {
       type: Schema.Types.ObjectId,
       ref: "AcademicDepartment",
@@ -65,6 +67,7 @@ const StudentSchema = new Schema<IStudent>(
       enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
       required: true,
     },
+    isDeleted: { type: Boolean, required: true, default: false },
   },
   {
     toJSON: {
@@ -80,6 +83,16 @@ StudentSchema.virtual("fullName").get(function () {
 StudentSchema.static("isExistUser", async function (id: string) {
   const existingUser = await Student.findOne({ id });
   return existingUser;
+});
+
+// update field
+StudentSchema.pre("updateOne", async function (next) {
+  const isId = this.getQuery();
+  const isStudentExists = await Student.findOne(isId);
+  if (!isStudentExists) {
+    throw new AppError("Student ID not found", 400);
+  }
+  next();
 });
 
 // 3. Create a Model.

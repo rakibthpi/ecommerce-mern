@@ -99,6 +99,58 @@ const createStudentZodSchema = z.object({
   }),
 });
 
+// Updated Student schema for partial updates (all fields optional)
+const updateStudentZodSchema = z.object({
+  student: z
+    .object({
+      name: userNameInterfaceSchema.partial(),
+      gender: z
+        .enum(["Male", "Female"], {
+          errorMap: () => ({ message: "Gender must be either Male or Female" }),
+        })
+        .optional(),
+      email: z
+        .string()
+        .email({ message: "Email must be a valid email address" })
+        .optional(),
+      dateOfBirth: z
+        .string()
+        .refine((date) => !isNaN(Date.parse(date)), {
+          message: "Date of birth must be a valid date",
+        })
+        .optional(),
+      contactNo: z
+        .string()
+        .regex(/^[0-9]+$/, {
+          message: "Contact number must contain only numbers",
+        })
+        .optional(),
+      emergencyContactNo: z
+        .string()
+        .regex(/^[0-9]+$/, {
+          message: "Emergency contact number must contain only numbers",
+        })
+        .optional(),
+      presentAddress: z.string().optional(),
+      permanentAddress: z.string().optional(),
+      guardian: guardianSchema.partial(),
+      localGuardian: localGuardianSchema.partial(),
+      profileImage: z.string().optional(),
+      academicSemester: z.string().optional(),
+      academicDepartment: z.string().optional(),
+      bloodGroup: z
+        .enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"], {
+          errorMap: () => ({
+            message:
+              "Blood group must be one of A+, A-, B+, B-, AB+, AB-, O+, O-",
+          }),
+        })
+        .optional(),
+    })
+    .partial(),
+});
+
 export const studentValidation = {
   createStudentZodSchema,
+  updateStudentZodSchema,
 };
