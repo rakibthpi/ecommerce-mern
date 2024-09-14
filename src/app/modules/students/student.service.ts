@@ -51,7 +51,8 @@ const updateStudentFromDb = async (
     const { name, guardian, localGuardian, ...remainingStudentData } =
       studentInput;
 
-    const modifiedUpdateData: Record<string, any> = {
+    type studentData = Record<string, any>;
+    const modifiedUpdateData: studentData = {
       ...remainingStudentData,
     };
     if (name && Object.keys(name).length > 0) {
