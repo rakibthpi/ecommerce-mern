@@ -1,12 +1,12 @@
 import { ErrorRequestHandler } from "express";
-import { ZodError, ZodIssue } from "zod";
-import { ErrorSources } from "../interface/error"; // Assuming you have this interface for error sources
-import handleZoodError from "../errors/handleZodError";
+import { ZodError } from "zod";
+import { ErrorSources } from "../interface/error"; // Assuming you have this interface
+import handleZodError from "../errors/handleZodError";
 import config from "../config";
 import handleMongooseError from "../errors/handleMongooseError";
-import { Types } from "mongoose";
 import handleCastError from "../errors/handleCastError";
 import handleDuplicateValue from "../errors/handleDuplicateValue";
+import AppError from "./AppError";
 
 const globalErrorHandler: ErrorRequestHandler = async (
   error,
@@ -14,7 +14,6 @@ const globalErrorHandler: ErrorRequestHandler = async (
   res,
   next
 ) => {
-  // Setting default values
   let statusCode = error.statusCode || 500;
   let message = error.message || "Something went wrong";
 
@@ -24,42 +23,51 @@ const globalErrorHandler: ErrorRequestHandler = async (
       message: "Something went wrong",
     },
   ];
-  let errorMessages: string[] = [];
+
   if (error instanceof ZodError) {
-    const simpleFication = handleZoodError(error);
-
-    statusCode = simpleFication.statusCode;
-    message = simpleFication.message;
-    errorSources = simpleFication.errorSources;
-  } else if (error?.name === "ValidationError") {
-    const simpleFication = handleMongooseError(error);
-
-    statusCode = simpleFication.statusCode;
-    message = simpleFication.message;
-    errorSources = simpleFication.errorSources;
-  } else if (error?.name === "CastError") {
-    const simpleFication = handleCastError(error);
-
-    statusCode = simpleFication.statusCode;
-    message = simpleFication.message;
-    errorSources = simpleFication.errorSources;
-  } else if (error.errorResponse.code === 11000) {
-    const simpleFication = handleDuplicateValue(error);
-    statusCode = simpleFication.statusCode;
-    message = simpleFication.message;
-    errorSources = simpleFication.errorSources;
+    const simplification = handleZodError(error);
+    statusCode = simplification.statusCode;
+    message = simplification.message;
+    errorSources = simplification.errorSources;
+  } else if (error.name === "ValidationError") {
+    const simplification = handleMongooseError(error);
+    statusCode = simplification.statusCode;
+    message = simplification.message;
+    errorSources = simplification.errorSources;
+  } else if (error.name === "CastError") {
+    const simplification = handleCastError(error);
+    statusCode = simplification.statusCode;
+    message = simplification.message;
+    errorSources = simplification.errorSources;
+  } else if (error.code === 11000) {
+    const simplification = handleDuplicateValue(error);
+    statusCode = simplification.statusCode;
+    message = simplification.message;
+    errorSources = simplification.errorSources;
+  } else if (error instanceof Error) {
+    message = error.message;
+    errorSources = [
+      {
+        path: "",
+        message: error.message,
+      },
+    ];
+  } else if (error instanceof AppError) {
+    statusCode = error.statusCode;
+    message = error.message;
+    errorSources = [
+      {
+        path: "",
+        message: error.message,
+      },
+    ];
   }
-  const finalMessage =
-    errorMessages.length === 1 ? errorMessages[0] : errorMessages.join(", ");
-  // Optionally handle other specific error types (e.g., Mongoose validation errors, JWT errors, etc.)
-  // Types of errors:
 
-  // Send error response
   return res.status(statusCode).json({
     success: false,
-    message: finalMessage || message,
+    message: message,
     errorSources,
-    error: error,
+    error: config.env === "development" ? error : undefined,
     stack: config.env === "development" ? error.stack : null,
   });
 };

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Error } from "mongoose";
 import config from "../../config";
 import { generateStudentId } from "../../utils/user.utils";
 import { AcademicSemester } from "../academicSemester/academicSemester.model";
@@ -43,10 +43,10 @@ const createStudentIntoDb = async (password: string, studentData: IStudent) => {
       await session.commitTransaction();
       await session.endSession();
       return result;
-    } catch (error) {
+    } catch (error: Error | any) {
       await session.abortTransaction();
       await session.endSession();
-      throw new AppError("Faild to create student", 500);
+      throw new Error(error);
     }
   } catch (error) {
     throw error;

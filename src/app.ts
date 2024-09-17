@@ -13,8 +13,9 @@ app.use(cors());
 // main Routes
 app.use("/api", mainRoutes);
 
-const testingPerpes = (req: Request, res: Response) => {
-  res.send("Hello World!");
+const testingPerpes = async (req: Request, res: Response) => {
+  Promise.reject();
+  // res.send("Hello World!");
 };
 app.get("/", testingPerpes);
 

@@ -6,9 +6,26 @@ import { User } from "../users/user.model";
 
 // this is handle business logic here
 // Find all student from Database
-const findallStudentFromDb = async () => {
+type IStudentInput = Record<string, unknown>;
+const findallStudentFromDb = async (query: IStudentInput) => {
+  //{email: { $regex: query.searchTerm, $options: "i" }}
+
+  let searchTerm = "";
+  if (query && query?.searchTerm) {
+    searchTerm = query?.searchTerm as string;
+  }
   try {
-    const result = await Student.find()
+    const result = await Student.find({
+      $or: [
+        "email",
+        "name.firstName",
+        "name.middleName",
+        "name.lastName",
+        "presentAddress",
+      ].map((field) => ({
+        [field]: { $regex: searchTerm, $options: "i" },
+      })),
+    })
       .populate("academicSemester")
       .populate({
         path: "academicDepartment",
